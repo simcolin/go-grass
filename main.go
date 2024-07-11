@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"math/rand"
 	"runtime"
 	"sort"
 	"sync"
-	"time"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"github.com/ojrac/opensimplex-go"
@@ -94,9 +92,6 @@ func main() {
 		return strands[i].Y < strands[j].Y
 	})
 
-	showFpsTime := time.Now()
-	fpsValue := float32(0.0)
-
 	mode := "multithread_classic"
 
 	for !rl.WindowShouldClose() {
@@ -181,11 +176,8 @@ func main() {
 
 		frameTime := rl.GetFrameTime()
 
-		if showFpsTime.Before(time.Now()) {
-			fpsValue = frameTime
-			showFpsTime = time.Now().Add(time.Millisecond * 200)
-		}
-		rl.DrawText(fmt.Sprintf("%s : %.2f FPS", mode, 1.0/fpsValue), 10, 10, 16, rl.White)
+		rl.DrawFPS(10, 10)
+		rl.DrawText(mode, 10, 40, 16, rl.White)
 
 		windDirection = rl.Vector3Lerp(windDirection, windDirectionTarget, 0.01)
 		windPosition = rl.Vector3Add(windPosition, rl.Vector3Scale(windDirection, frameTime))
